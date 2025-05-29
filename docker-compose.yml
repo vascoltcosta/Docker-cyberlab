@@ -1,0 +1,26 @@
+version: '3'
+services:
+  web:
+    image: vulnerables/web-dvwa
+    ports:
+      - "8080:80"
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rootpass
+      MYSQL_DATABASE: dvwa
+      MYSQL_HOST: db
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: dvwa
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    
+  attacker:
+    build: ./attacker
+    tty: true
