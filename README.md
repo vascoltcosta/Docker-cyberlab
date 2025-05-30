@@ -29,9 +29,7 @@ A directory was needed to all services that were to be used. So a directory call
 ````
 docker-cyberlab/
 ├── docker-compose.yml
-├── web/
-├── db/
-│   └── init.sql
+├── Juice-Shop/
 ├── attacker/
 │   └── Dockerfile
 ├── README.md
@@ -39,41 +37,27 @@ docker-cyberlab/
 
 ### Some necessary insights.
 
-The web directory is empty and doesnt need to be there. It only is for visual understanding. In order to build a container there is the need to have a DockerFile, this DockerFile has the basic set up needed to intialize an image and basic function if wanted. This DockerFile is called when the docker-compose.yml is running. The fact is, the web page being used is a prefabricated one called DVWA (Damn Vulnerable Web App), that being said, instead of having the DockerFile of the web page there is a reference to the docker repository where the web app is pulled. The same happens with the database. The init.sql file is needed to start the db but for now is empty. 
+The Juice-Shop directory is empty and doesnt need to be there. It only is for visual understanding of the tecnologies in use. In order to build a container there is the need to have a DockerFile, this DockerFile has the basic set up needed to intialize an image and basic function if wanted. This DockerFile is called when the docker-compose.yml is running. The fact is, the web page being used is a prefabricated one called OWasp Juice Shop, that being said, instead of having the DockerFile of the web page there is a reference to the docker repository where the web app is pulled. The same happens with the database. The init.sql file is needed to start the db but for now is empty. 
 
 ### This is the docker-compose.yml code:
 
 ````
 version: '3'
 services:
-  web:
-    image: vulnerables/web-dvwa
+  juice-shop:
+    image: bkimminich/juice-shop
+    container_name: juice-shop
     ports:
-      - "8080:80"
-    environment:
-      MYSQL_USER: root
-      MYSQL_PASSWORD: rootpass
-      MYSQL_DATABASE: dvwa
-      MYSQL_HOST: db
-    depends_on:
-      - db
-
-  db:
-    image: mysql:5.7
+      - "3000:3000"
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: dvwa
-    volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    
+
   attacker:
+    container_name: juice-attacker
     build: ./attacker
     tty: true
 ````
 ### Has I said:
-- web: -> image: vulnerables/web-dvwa // image: pulls a already created one
-- db: -> image: mysql:5.7
+- juice-shop: -> image: bkimminich/juice-shop // image: pulls a already created one
 - attacker: -> build: ./attacker // finds and loads the DockerFile on the directory
 
 ### DockerFile of the attacker container:
