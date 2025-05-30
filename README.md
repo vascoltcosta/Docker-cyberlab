@@ -11,7 +11,7 @@ So that’s what I’m trying to do here — building from scratch and throwing 
 
 ### Objectives:
 - Use Docker to create virtual environments
-- Deploy a vulnerable web application for testing
+- Understanding the enemie
 - Practice hacking techniques and document the process
 
 ## Part 1: Docker
